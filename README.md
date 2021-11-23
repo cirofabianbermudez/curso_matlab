@@ -132,7 +132,31 @@ Supongamos un vector de la siguiente forma `x1 = 1:100`, el primer elemento vale
 
 
 
-## 5. Representación grafica de datos
+## 5. Indexación lógica
+
+Los operadores relacionales, como `>`, `<`, `==` y `~=`, realizan comparaciones entre dos valores. El resultado de una comparación de igualdad o desigualdad es 1 (verdadero) o 0 (falso). Para entenderlo mejor analizaremos los siguientes vectores `v = [4.0, 6.66, 1.51, 4.72, 9.06].'` y `t = [10 15 16 20 25].'`, de manera que estos dos vectores representan la velocidad y el tiempo medidos en un sistema.
+
+Se puede comparar un vector o una matriz con un único valor escalar utilizando operadores relacionales. El resultado es un arreglo lógico del mismo tamaño que el arreglo original.
+
+Se puede utilizar un arreglo lógico como índice de arreglo, en cuyo caso MATLAB extrae los elementos del arreglo en los que el índice es `true`.
+
+También puede utilizar la indexación lógica con dos vectores diferentes.
+
+Se puede utilizar la indexación lógica para reasignar valores en un arreglo. 
+
+Puede utilizar los operadores lógicos `and` (`&`) y `or` (`|`) para combinar comparaciones lógicas.
+
+| Comando           | Descripción                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `pi < 4`          | Devuelve un `1` lógico.                                      |
+| `test = v < 4`    | Devuelve un vector lógico `[0 0 1 0 0].'`                    |
+| `test = v(v < 4)` | Extrae los elementos del arreglo que sean menores a 4, `[1.5100]` |
+| `test = t(v < 4)` | Extrae los elementos del arreglo de `t` correspondientes cuando `v` es menor a 4, `[16]` |
+| `v(v < 4 ) = 0`   | Asigna cero a todos los elementos de `v` que sean menores que 4.  `[4.0, 6.66, 0, 4.72, 9.06].'` |
+
+
+
+## 6. Representación grafica de datos
 
 Para poder graficar una función primero es necesario definir un vector que represente el eje de las `x` y uno que represente el eje de las `y`, es importante que los vectores tengan el mismo tamaño.
 
@@ -256,30 +280,44 @@ xlabel('Años'); ylabel('10^9 kWh / dia');
 
 
 
-### Prog06: pepe pecas
+### Prog06: Frecuencias en audio
 
 Las señales de audio suelen estar compuestas por muchas frecuencias diferentes. Por ejemplo, en la música, la nota "do medio" tiene una frecuencia fundamental de 261,6 Hz, y la mayoría de la música consta de varias notas (o frecuencias) que se tocan al mismo tiempo.
 
-En este proyecto, analizará el contenido de frecuencia de un órgano que toca el acorde Do.
-
-El acorde Do consta de las notas Do (261,6 Hz), Mi (329,6 Hz) y Sol (392 Hz). Los puntos resaltados en esta gráfica de frecuencias corresponden a cada una de las notas.
-
-La grabación del acorde Do está almacenada en un archivo llamado `Cchord.mat`. Este archivo contiene dos variables:
+Se analizará el contenido de frecuencia de un órgano que toca el acorde Do. El acorde Do consta de las notas Do (261,6 Hz), Mi (329,6 Hz) y Sol (392 Hz).  La grabación del acorde Do está almacenada en un archivo llamado `Cchord.mat`. Este archivo contiene dos variables:
 
 - `y`: señal de la grabación
 - `fs`: frecuencia de muestreo
 
-En la gráfica, observe que `y` es periódica, pero no es una simple onda sinusoidal. Está compuesta por diversas ondas sinusoidales con diferentes frecuencias.
-
 Una transformada de Fourier devolverá información sobre el contenido de frecuencia de la señal. La ubicación de las frecuencias dominantes mostrará qué notas están contenidas en el acorde.
 
-Puede utilizar la función `fft` para calcular la transformada discreta de Fourier de un vector.
+Se puede utilizar la función `fft` para calcular la transformada discreta de Fourier de un vector. Los valores de salida de `fft` son números complejos. Se puede utilizar la función `abs` para obtener la magnitud.
 
-Los valores de salida de `fft` son números complejos. Puede utilizar la función `abs` para obtener la magnitud.
+```matlab
+%% prog06_frecuencia_audio
+clear; close all; clc;
+load Cchord.mat;
+% sound(y);
+n = numel(y);
+t = 0:n-1;
+t = t/fs;
+plot(t,y)
+yfft = abs(fft(y));
+f = 0:n-1;
+f = f*(fs/(n-1));
+plot(f,yfft);
+grid on; grid minor;
+title('FFT'); xlabel('Hz'); ylabel('Amplitud');	
+xlim([0 1000])
+```
 
-El vector `f` contiene `n` puntos. Para convertir estos puntos en frecuencias, puede multiplicar todo el vector por la frecuencia de muestreo (`fs`) y dividirlo entre el número de puntos (`n`).
 
-`f` contendrá las frecuencias desde `0` hasta `fs`. Las frecuencias dominantes se encuentran al principio de `f`. Puede utilizar la función `xlim` para hacer zoom en el área de interés.
+
+## 7. Construcciones de programación
+
+
+
+### Prog7: 
 
 ```matlab
 ```
