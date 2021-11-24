@@ -16,6 +16,7 @@ Autor: Ciro Fabian Bermudez Marquez
 * El comando`clc` limpia el prompt.
 
 > Nota 1: cuando se trata de archivos `.mat` es opcional poner la terminación dentro de los comandos.
+>
 > Nota 2: se puede agregar como parámetro opcional la variable que se desee cargar en `save` y `load`.
 
 
@@ -314,6 +315,24 @@ xlim([0 1000])
 
 
 ## 7. Construcciones de programación
+
+### 7.1 Sentencia if
+
+La sentencia `if` sirve para realizar toma de decisiones en nuestros códigos. Evalúa una expresión y ejecuta un grupo de declaraciones cuando la expresión es verdadera. Una expresión es verdadera cuando su resultado no está vacío y conti ene solo elementos distintos de cero (lógicos o numéricos reales). De lo contrario, la expresión es falsa.
+
+Los bloques `elseif` y `else` son opcionales. Las declaraciones se ejecutan solo si las expresiones anteriores en el bloque `if` ... `end` son falsas. Un bloque `if` puede incluir varios bloques `elseif`.
+
+La sintaxis es la siguiente:
+
+```matlab
+if expresion
+    sentencias
+elseif expresion
+    sentencias
+else
+    sentencias
+end
+```
 
 
 
