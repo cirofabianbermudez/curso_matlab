@@ -320,9 +320,7 @@ xlim([0 1000])
 
 La sentencia `if` sirve para realizar toma de decisiones en nuestros códigos. Evalúa una expresión y ejecuta un grupo de declaraciones cuando la expresión es verdadera. Una expresión es verdadera cuando su resultado no está vacío y conti ene solo elementos distintos de cero (lógicos o numéricos reales). De lo contrario, la expresión es falsa.
 
-Los bloques `elseif` y `else` son opcionales. Las declaraciones se ejecutan solo si las expresiones anteriores en el bloque `if` ... `end` son falsas. Un bloque `if` puede incluir varios bloques `elseif`.
-
-La sintaxis es la siguiente:
+Los bloques `elseif` y `else` son opcionales. Las declaraciones se ejecutan solo si las expresiones anteriores en el bloque `if` ... `end` son falsas. Un bloque `if` puede incluir varios bloques `elseif`. La sintaxis es la siguiente:
 
 ```matlab
 if expresion
@@ -336,8 +334,107 @@ end
 
 
 
-### Prog7: 
+### Prog7: Diagrama de bode
+
+El siguiente código muestra como realizar el diagrama de bode de una función de transferencia y utilizando la estructura `if-else` se controla el cambio de unidades de la frecuencia, rad/s si `Hz = 0;` y Hz si `Hz = 1;`.
 
 ```matlab
+%% prog07_diagrama_de_bode
+clear; close all; clc;
+Hz = 1;
+num = [200 0]; den = [1 12 20];
+sys = tf(num,den);
+
+w = logspace(-2,5,500);         % Vector de frecuencias 
+[mag, fase, ~] = bode(sys,w);
+
+if Hz == 1
+    w = w / (2*pi); text = 'Frequency (Hz)';
+else
+    text = 'Frequency (rad/s)';
+end
+
+figure(1);
+subplot(2,1,1); semilogx(w,20*log10(mag(:)),'DisplayName','Normal'); grid on;
+title('Diagrama de Bode','interpreter','latex');
+ylabel('Magnitud (dB)','interpreter','latex'); xlabel(text,'interpreter','latex');
+legend('interpreter','latex','FontSize',7); set(gca,'TickLabelInterpreter','latex');
+axis([min(w) max(w) -60 30]);
+
+subplot(2,1,2); semilogx(w,fase(:),'DisplayName','Normal'); grid on;
+ylabel('Fase (deg)','interpreter','latex'); xlabel(text,'interpreter','latex');
+legend('interpreter','latex','FontSize',7); set(gca,'TickLabelInterpreter','latex');
+axis([min(w) max(w) -100 100]);
 ```
+
+
+
+### 7.2 Sentencia for
+
+El ciclo `for` ejecuta un grupo de sentencias en un ciclo durante un número específico de veces. Cuando se conoce exactamente el número de iteraciones  que un algoritmo va a ejecutar es recomendable utilizar esta estructura. La sintaxis es la siguiente:
+
+```matlab
+for indice = valores
+   sentencias
+end
+```
+
+
+
+### Prog8: Múltiples gráficas sobrepuestas
+
+En el siguiente código se muestra como graficar múltiples gráficas de una función variando uno de sus parámetro para analizar el comportamiento que este produce.
+
+```matlab
+%% prog08_graficas_sobrepuestas
+clear; close all; clc;
+
+t = linspace(0,3,100);
+
+for i = 0:3
+    y = t.^2 + i;	% Transformacion rigida, desplazamiento vertical
+    nombre = "$f(t) = t^{2} + $ "+ i;
+    plot(t,y,'DisplayName',nombre); hold on;
+end
+grid on; grid minor;
+title('$f(t) = t^{2} + i$','interpreter','latex');
+ylabel('$f(t)$','interpreter','latex');
+xlabel('$t$','interpreter','latex');
+legend('interpreter','latex','FontSize',10,'Location','southeast');
+set(gca,'TickLabelInterpreter','latex');
+axis square;
+```
+
+
+
+### Prog9: Múltiples gráficas sobrepuestas con animación
+
+Se modifico ligeramente el código anterior para poder animar como se presentan las graficas. 
+
+```matlab
+%% prog08_graficas_sobrepuestas_animacion
+clear; close all; clc;
+t = linspace(0,3,100);
+iter = 0:5;
+y = zeros( numel(iter), numel(t) );
+nombres =  strings( 1, numel(iter) );
+for i = iter
+    y(i+1,:) = t.^2 + i;	
+    nombres(i+1) = "$f(t) = t^{2} + $ "+ i;
+end
+f = figure; f.Position(1:2) = [0 50]; % [right bottom]
+grid on; grid minor; axis square; hold on;
+axis([0 max(t) 0 20]);
+title('$f(t) = t^{2} + i$','interpreter','latex');
+ylabel('$f(t)$','interpreter','latex');
+xlabel('$t$','interpreter','latex');
+set(gca,'TickLabelInterpreter','latex');
+legend('interpreter','latex','FontSize',10,'Location','northwest');
+for i = iter
+    pause(1);
+    plot(t,y(i+1,:),'DisplayName',nombres(i+1)); 
+end
+```
+
+
 
