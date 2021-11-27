@@ -1,4 +1,4 @@
-%% prog08_graficas_sobrepuestas_animacion
+%% prog09_graficas_sobrepuestas_animacion
 clear; close all; clc;
 t = linspace(0,3,100);
 iter = 0:5;

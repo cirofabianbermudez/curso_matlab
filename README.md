@@ -67,17 +67,17 @@ Existe cierta flexibilidad cuando se crean arreglos. Por ejemplo, todas estas so
 
 ### Funciones para crear arreglos
 
-| Comando                 | Descripción                                                  |
-| ----------------------- | ------------------------------------------------------------ |
-| `x = 1:10`              | Vector de 1 a 10 de uno en uno.                              |
-| `x = 0:2:20`            | Vector de 0 hasta 20 de dos en dos.                          |
-| `x = linspace(0,20,2)`  | Vector linealmente espaciado (uniforme) de 0 hasta 20 de dos en dos. |
-| `x = rand(2)`           | Matriz de 2X2  de números aleatorios.                        |
-| `x = randi([1,20],5,7)` | Matriz de números aleatorios enteros entre 1 y 20 de 5X7.    |
-| `x = ones(2,1)`         | Matriz de 2X1  llena de unos.                                |
-| `x = zeros(3,2)`        | Matriz de 3X2 llena de ceros.                                |
-| `size(x)`               | Retorna el tamaño de la matriz  `x`                          |
-| `numel(x)`              | Retorna el número de elementos del vector o matriz           |
+| Comando                       | Descripción                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `x = 1:10`                    | Vector de 1 a 10 de uno en uno.                              |
+| `x = 0:2:20`                  | Vector de 0 hasta 20 de dos en dos.                          |
+| `x = linspace(0,20,2)`        | Vector linealmente espaciado (uniforme) de 0 hasta 20 de dos en dos. |
+| `x = rand(2)`                 | Matriz de 2X2  de números aleatorios.                        |
+| `x = randi([1,20],5,7)`       | Matriz de números aleatorios enteros entre 1 y 20 de 5X7.    |
+| `x = ones(2,1)`               | Matriz de 2X1  llena de unos.                                |
+| `x = zeros(3,2)`              | Matriz de 3X2 llena de ceros.                                |
+| `size(x)` o `[r,c] = size(x)` | Retorna el tamaño de la matriz  `x`                          |
+| `numel(x)`                    | Retorna el número de elementos del vector o matriz           |
 
 
 
@@ -314,7 +314,7 @@ xlim([0 1000])
 
 
 
-## 7. Construcciones de programación
+## 7. Construcciones de programación básica
 
 ### 7.1 Sentencia if
 
@@ -435,6 +435,18 @@ for i = iter
     plot(t,y(i+1,:),'DisplayName',nombres(i+1)); 
 end
 ```
+
+
+
+## 8. Manejo de tablas
+
+
+
+
+
+## 9. Otro tema
+
+
 
 
 
