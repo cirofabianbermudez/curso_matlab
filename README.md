@@ -72,12 +72,22 @@ Existe cierta flexibilidad cuando se crean arreglos. Por ejemplo, todas estas so
 | `x = 1:10`                    | Vector de 1 a 10 de uno en uno.                              |
 | `x = 0:2:20`                  | Vector de 0 hasta 20 de dos en dos.                          |
 | `x = linspace(0,20,2)`        | Vector linealmente espaciado (uniforme) de 0 hasta 20 de dos en dos. |
-| `x = rand(2)`                 | Matriz de 2X2  de números aleatorios.                        |
-| `x = randi([1,20],5,7)`       | Matriz de números aleatorios enteros entre 1 y 20 de 5X7.    |
+| `x = rand(2,2)`               | Matriz de 2X2  de números aleatorios uniformemente distribuidos. |
+| `x = randn(2,2)`              | Matriz de 2X2  de números aleatorios normalmente distribuidos, es decir media de cero |
+| `x = randi(10,100,1);`        | Matriz de 100X1 de números aleatorios enteros uniformemente distribuidos. con valor máximo de 1. |
+| `x = randi([1,20],5,7)`       | Matriz de 5X7 de números aleatorios enteros entre 1 y 20.    |
+| `x = a + (b-a)*rand(n,m)`     | Matriz de nXm de números aleatorios uniformemente distribuidos entre `a` y `b`. |
+| `x = M + sd*randn(n,m)`       | Matriz de nXm de números aleatorios normalmente distribuidos con una media `M` y una derivación estandar `sd`. |
 | `x = ones(2,1)`               | Matriz de 2X1  llena de unos.                                |
+| `x = ones(2,1)*5`             | Matriz de 2X1  llena de cincos.                              |
 | `x = zeros(3,2)`              | Matriz de 3X2 llena de ceros.                                |
 | `size(x)` o `[r,c] = size(x)` | Retorna el tamaño de la matriz  `x`                          |
 | `numel(x)`                    | Retorna el número de elementos del vector o matriz           |
+| `x = reshape(A,3,3).'`        | Si `A = 1:9;`, generar una matriz 3X3 con los elementos de `A`, nota también funciona `reshape(A,[3,3]).` |
+| `x = reshape(A,2,[]).'`       | Si `A = 1:10;`, generar una matriz de dos renglones y automáticamente calcula  cuantas columnas necesita (en este caso 5) con los elementos de`A`. |
+| `x = A(:)`                    | Sea `A` cualquier matriz de cualquier tamaño, retorna la matriz `A` convertida en un vector columna, leyendo de arriba a abajo de la primera columna a la última. |
+
+> Nota: para que el comando `reshape()` funcione correctamente es necesario que el número de elementos del vector del argumento coincida con el número de elementos de la matriz resultante.
 
 
 
@@ -108,7 +118,20 @@ Supongamos una matriz de la forma `y = [1 2 3; 4 5 6; 7 8 9] `, entonces podemos
 
 
 
-## 4. Calculo con arreglos
+# 4. Concatenación
+
+Concatenar matrices y vectores es una actividad muy común de manera que en esta sección se mostraran algunos ejemplos. sea  `A = 1:9;`, `B = reshape(A,[3,3]).';` y `C = (10:12).';`
+
+| Comando        | Descripción                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `h = [B C]`    | Concatenación del vector `C` a la derecha de la matriz `B`.  |
+| `h = [C D]`    | Concatenación del vector `C` a la izquierda de la matriz `B`. |
+| `h = [B; C.']` | Concatenación del vector `C` abajo de la matriz `B`.         |
+| `h = [C.'; B]` | Concatenación del vector `C` arriba de la matriz `B`.        |
+
+
+
+## 5. Calculo con arreglos
 
 Cuando se esta trabajando con arreglos es muy sencillo realizar operaciones entre ellos. 
 
@@ -120,6 +143,7 @@ Supongamos un vector de la siguiente forma `x1 = 1:100`, el primer elemento vale
 | `h = x1 + x2`          | Se suman elemento a elemento `x1` y `x2`. **DEBEN SER DEL MISMO TAMAÑO** |
 | `h = 2*x1`             | Multiplicación por un escalar.                               |
 | `h = x1/2`             | División por un escalar.                                     |
+| `x = B/A`              | Sea`A = [1 1 3; 2 0 4; -1 6 -1];`, ` B = [2 19 8];` de manera que se tiene lineal de la forma `A*x = B`, se resuelve de la siguiente manera. |
 | `max(x1)`              | Calcula el máximo de todos los elementos.                    |
 | `min(x1)`              | Calcula el mínimo de todos los elementos.                    |
 | `sqrt(x1)`             | Calcula la raíz cuadrada de cada uno de todos los elementos. |
@@ -133,7 +157,7 @@ Supongamos un vector de la siguiente forma `x1 = 1:100`, el primer elemento vale
 
 
 
-## 5. Indexación lógica
+## 6. Indexación lógica
 
 Los operadores relacionales, como `>`, `<`, `==` y `~=`, realizan comparaciones entre dos valores. El resultado de una comparación de igualdad o desigualdad es 1 (verdadero) o 0 (falso). Para entenderlo mejor analizaremos los siguientes vectores `v = [4.0, 6.66, 1.51, 4.72, 9.06].'` y `t = [10 15 16 20 25].'`, de manera que estos dos vectores representan la velocidad y el tiempo medidos en un sistema.
 
@@ -157,7 +181,7 @@ Puede utilizar los operadores lógicos `and` (`&`) y `or` (`|`) para combinar co
 
 
 
-## 6. Representación grafica de datos
+## 7. Representación grafica de datos
 
 Para poder graficar una función primero es necesario definir un vector que represente el eje de las `x` y uno que represente el eje de las `y`, es importante que los vectores tengan el mismo tamaño.
 
@@ -170,6 +194,8 @@ x = 0:0.1:2*pi; 										% x = linspace(0,2*pi,100);
 y = sin(x);
 plot(x,y,'-sb','DisplayName', 'f(x) = sin(x)');			% Graficar, nombre y color
 axis( [min(x) max(x) min(y) max(y)] );					% Límites de grafica
+% xlim([ min(x) max(x)]);
+% ylim([ min(y) max(y)]);
 legend('Location','northeast');							% Ubicación leyenda
 grid on; grid minor;									% Reja de fondo
 title('f(x) = sin(x)'); xlabel('x'); ylabel('f(x)');	% Titulos
@@ -178,7 +204,8 @@ title('f(x) = sin(x)'); xlabel('x'); ylabel('f(x)');	% Titulos
 * `'-sb'` **Line Style - Marker - Color**  (si no pones uno se elige el predeterminado), linea solida, marcadores cuadrados, color azul.
 * El comando `plot(y)` grafica los puntos de `y` en el eje vertical, y de 1 hasta N (número de elementos del vector) en el eje horizontal. 
 * `axis( [xmin xmax ymin ymax] )` controla los límites de la gráfica. 
-* `title(''); xlabel(''); ylabel('');` agrega las etiquetas de los ejes y el título.+-
+* En lugar de `axis()` se pueden utilizar los comandos de `xlim()` y `ylim()` para controlar los ejes por separado.
+* `title(''); xlabel(''); ylabel('');` agrega las etiquetas de los ejes y el título.
 
 
 
@@ -302,10 +329,13 @@ load Cchord.mat;
 n = numel(y);
 t = 0:n-1;
 t = t/fs;
+figure(1);
 plot(t,y)
+grid on; grid minor;
 yfft = abs(fft(y));
 f = 0:n-1;
 f = f*(fs/(n-1));
+figure(2);
 plot(f,yfft);
 grid on; grid minor;
 title('FFT'); xlabel('Hz'); ylabel('Amplitud');	
@@ -314,9 +344,9 @@ xlim([0 1000])
 
 
 
-## 7. Construcciones de programación básica
+## 8. Construcciones de programación básica
 
-### 7.1 Sentencia if
+### 8.1 Sentencia if
 
 La sentencia `if` sirve para realizar toma de decisiones en nuestros códigos. Evalúa una expresión y ejecuta un grupo de declaraciones cuando la expresión es verdadera. Una expresión es verdadera cuando su resultado no está vacío y conti ene solo elementos distintos de cero (lógicos o numéricos reales). De lo contrario, la expresión es falsa.
 
@@ -369,7 +399,7 @@ axis([min(w) max(w) -100 100]);
 
 
 
-### 7.2 Sentencia for
+### 8.2 Sentencia for
 
 El ciclo `for` ejecuta un grupo de sentencias en un ciclo durante un número específico de veces. Cuando se conoce exactamente el número de iteraciones  que un algoritmo va a ejecutar es recomendable utilizar esta estructura. La sintaxis es la siguiente:
 
@@ -438,15 +468,19 @@ end
 
 
 
-## 8. Manejo de tablas
+## 9. Manejo de tablas
 
 
 
 
 
-## 9. Otro tema
+## 10. Otro tema
 
 
+
+
+
+# Examen 1
 
 
 
