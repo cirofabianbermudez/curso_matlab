@@ -474,7 +474,7 @@ end
 
 
 
-## 10. Otro tema
+## 10. Funciones
 
 
 
