@@ -480,6 +480,21 @@ end
 
 
 
+
+
+| Comando       | Descripción |
+| ------------- | ----------- |
+| `any()`       |             |
+| `all()`       |             |
+| `find()`      |             |
+| `flip()`      |             |
+| `repelem()`   |             |
+| `ismember()`  |             |
+| `diff()`      |             |
+| `repmat()`    |             |
+| `randperm(n)` |             |
+| `numel(x)`    |             |
+
 # Examen 1
 
 
