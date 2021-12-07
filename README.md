@@ -348,7 +348,7 @@ xlim([0 1000])
 
 ### 8.1 Sentencia if
 
-La sentencia `if` sirve para realizar toma de decisiones en nuestros códigos. Evalúa una expresión y ejecuta un grupo de declaraciones cuando la expresión es verdadera. Una expresión es verdadera cuando su resultado no está vacío y conti ene solo elementos distintos de cero (lógicos o numéricos reales). De lo contrario, la expresión es falsa.
+La sentencia `if` sirve para realizar toma de decisiones en nuestros códigos. Evalúa una expresión y ejecuta un grupo de declaraciones cuando la expresión es verdadera. Una expresión es verdadera cuando su resultado no está vacío y contiene solo elementos distintos de cero (lógicos o numéricos reales). De lo contrario, la expresión es falsa.
 
 Los bloques `elseif` y `else` son opcionales. Las declaraciones se ejecutan solo si las expresiones anteriores en el bloque `if` ... `end` son falsas. Un bloque `if` puede incluir varios bloques `elseif`. La sintaxis es la siguiente:
 
@@ -356,6 +356,18 @@ Los bloques `elseif` y `else` son opcionales. Las declaraciones se ejecutan solo
 if expresion
     sentencias
 elseif expresion
+    sentencias
+else
+    sentencias
+end
+
+
+if expresion
+    sentencias
+end
+
+
+if expresion
     sentencias
 else
     sentencias
@@ -401,7 +413,7 @@ axis([min(w) max(w) -100 100]);
 
 ### 8.2 Sentencia for
 
-El ciclo `for` ejecuta un grupo de sentencias en un ciclo durante un número específico de veces. Cuando se conoce exactamente el número de iteraciones  que un algoritmo va a ejecutar es recomendable utilizar esta estructura. La sintaxis es la siguiente:
+El ciclo `for` ejecuta un grupo de sentencias en un ciclo durante un número específico de veces. Cuando se conoce exactamente el número de iteraciones que un algoritmo va a ejecutar es recomendable utilizar esta estructura. La sintaxis es la siguiente:
 
 ```matlab
 for indice = valores
@@ -475,6 +487,32 @@ end
 
 
 ## 10. Funciones
+
+Para crear funciones es necesario únicamente utilizar la sintaxis correcta y estructurar el código de manera que sea reutilizable y eficiente. Por regla general las funciones siempre tienen entradas y salidas. Es importante definir el tipo de dato de las entradas y de las salidas. Por ejemplo definir el número de salidas, dadas las entradas. La sintaxis es la siguiente:
+
+```matlab
+function [s1,s2,...,sn] = function_name(x1,x2,...,xn)	% funcion multiparametro
+	sentencias
+	s1 = sentencias;
+	s2 = sentencias;
+	sn = sentencias;
+end
+
+
+funtion salida = function_name( entrada )	% funcion simple
+	salida = entrada;
+end
+```
+
+
+
+Cuando definimos una función es importante que el nombre del archivo que contiene la función sea el mismo que el nombre de la función. Por ejemplo si la función se llama `tooth()` entonces el nombre del archivo es `tooth.mat`.
+
+Cuando creamos una función nueva, el archivo de la función debe encontrarse en el mismo directorio en el que estemos trabajando, de lo contrario no será posible ejecutar la función en un llamado dentro de un script. Como recomendación siempre es buena idea tener todos los archivos de funciones dentro del directorio en el que estemos trabajando.
+
+
+
+
 
 
 
