@@ -34,6 +34,28 @@ Autor: Ciro Fabian Bermudez Marquez
 | `doc commandname`   | Abre la documentación de `commandname`. **MÁS IMPORTANTE**  |
 
 
+
+## Lista de operadores básicos
+
+| Operador | Función              |
+| -------- | -------------------- |
+| `+`      | Suma                 |
+| `-`      | Resta                |
+| `*`      | Multiplicación       |
+| `/`      | División             |
+| `^`      | Exponenciación       |
+| `&`      | Operación lógica AND |
+| `|`      | Operación lógica OR  |
+
+La siguiente lista es el orden de las operaciones; el operador que se encuentra más arriba en la lista debe aplicarse primero.
+
+1. paréntesis, corchetes
+2. exponentes, raíces
+3. multiplicación, división
+4. suma, resta
+
+
+
 ## Lista de comandos de funciones matemáticas 
 
 
@@ -118,7 +140,7 @@ Supongamos una matriz de la forma `y = [1 2 3; 4 5 6; 7 8 9] `, entonces podemos
 
 
 
-# 4. Concatenación
+## 4. Concatenación
 
 Concatenar matrices y vectores es una actividad muy común de manera que en esta sección se mostraran algunos ejemplos. sea  `A = 1:9;`, `B = reshape(A,[3,3]).';` y `C = (10:12).';`
 
@@ -454,7 +476,7 @@ axis square;
 Se modifico ligeramente el código anterior para poder animar como se presentan las graficas. 
 
 ```matlab
-%% prog08_graficas_sobrepuestas_animacion
+%% prog09_graficas_sobrepuestas_animacion
 clear; close all; clc;
 t = linspace(0,3,100);
 iter = 0:5;
@@ -482,7 +504,200 @@ end
 
 ## 9. Manejo de tablas
 
+Para demostrar como trabajar con tablas utilizaremos el dataset de la siguiente página [GitHub de FiveThirtyEight](https://github.com/fivethirtyeight/data/tree/master/tarantino). El nombre del dataset es `tarantino.csv` y contiene lo siguiente:
 
+| Header       | Definition                                             |
+| ------------ | ------------------------------------------------------ |
+| `movie`      | Film title                                             |
+| `type`       | Whether the event was a profane word or a death        |
+| `word`       | The specific profane word, if the event was a word     |
+| `minutes_in` | The number of minutes into the film the event occurred |
+
+El artículo original se encuentra en el siguiente link [A Complete Catalog Of Every Time Someone Cursed Or Bled Out In A Quentin Tarantino Movie - FiveThirtyWight](https://fivethirtyeight.com/features/complete-catalog-curses-deaths-quentin-tarantino-films/). El objetivo es replicar las gráficas y tablas del artículo original con Matlab.
+
+
+
+### Prog10: Análisis de datos con tablas
+
+#### Parte 1
+
+```matlab
+%% prog10_analisis_de_datos_con_tablas
+clear; close all; clc;
+data = readtable("tarantino.csv");
+temp1 = strcmp(data.type,'word');            % 1 en 'words'
+temp2 = strcmp(data.movie,'Reservoir Dogs'); % 1 en 'Reservoir Dogs'
+temp3 = strcmp(data.type,'death');           % 1 en 'death'
+minutos = data.minutes_in( temp2 );          % minutos de Reservoir Dogs'
+minutos2 = data.minutes_in( temp3 & temp2 ); % minutos con 'death' y 'Reservoir Dogs'
+
+inicio = 0;
+final = 95.45;
+grupos = linspace(inicio,final,95);          % Generar grupos
+y1 = zeros(1,numel(grupos)-1);    
+y2 = zeros(1,numel(grupos)-1);
+for i = 1:numel(grupos)-1
+    y1(i) = sum( grupos(i)<=minutos & minutos<grupos(i+1) );
+    y2(i) = sum( grupos(i)<=minutos2 & minutos2<grupos(i+1) );
+    fprintf("%f \t %f \t %d\n",grupos(i),grupos(i+1),y1(i));
+end
+fprintf("Tamanio de grupo: %f\n",grupos(2)-grupos(1));
+bar(grupos(2:end),y1,0.5);
+hold on;
+bar(grupos(2:end),y2);
+ylim([0 20]); xlim([0 100]);
+grid on; grid minor;
+title('RESERVOIR DOGS, 1992');
+xlabel("min"); ylabel('count of curses');
+```
+
+
+
+#### Parte 2
+
+```matlab
+%%
+clear; close all; clc;
+data = readtable("tarantino.csv");
+m = {'Jackie Brown', 'Pulp Fiction','Reservoir Dogs','Kill Bill: Vol. 2','Django Unchained','Inglorious Basterds','Kill Bill: Vol. 1'};
+t = {'word','death'};
+R = zeros(numel(m),numel(t)+1);         % 1 extra para TOTAL
+
+for i = 1:numel(m)
+    temp1 = strcmp(data.movie,m(i));
+    temp2 = strcmp(data.type,t(1));
+    temp3 = strcmp(data.type,t(2));
+    R(i,1) = sum(temp1 & temp2);
+    R(i,2) = sum(temp1 & temp3);
+    R(i,3) = R(i,1)/R(i,2);
+end
+
+t_curses = sum(R(:,1)); t_deaths = sum(R(:,2));
+R = round( [R ; [t_curses, t_deaths, t_curses/t_deaths] ],1) ;
+
+film = [m.'; 'TOTAL'];
+curses = R(:,1);
+deaths = R(:,2);
+ratio = R(:,3);
+results = table(film,curses,deaths,ratio);
+format short;
+disp(results);
+```
+
+Salida:
+
+```
+             film              curses    deaths    ratio
+    _______________________    ______    ______    _____
+
+    {'Jackie Brown'       }      368        4        92 
+    {'Pulp Fiction'       }      469        7        67 
+    {'Reservoir Dogs'     }      421       10      42.1 
+    {'Kill Bill: Vol. 2'  }       69       11       6.3 
+    {'Django Unchained'   }      262       47       5.6 
+    {'Inglorious Basterds'}       58       48       1.2 
+    {'Kill Bill: Vol. 1'  }       57       63       0.9 
+    {'TOTAL'              }     1704      190         9 
+```
+
+
+
+#### Parte 3
+
+```matlab
+%%
+clear; close all; clc;
+data = readtable("tarantino.csv");
+w = {'fucking','shit','fuck','fucks','n-word','goddamn','goddamned','motherfucker','motherfuckers','bitch','bitches','hell','damn','damned','motherfucking'};
+R = zeros(numel(w),2);
+
+n_elem = sum(strcmp(data.type,'word'));
+
+for i = 1:numel(w) 
+   R(i,1) = sum( strcmp( data.word,w(i) ) );
+   R(i,2) = (R(i,1)/n_elem )*100;
+end
+R = round(R,1);
+
+word = w.';
+count = R(:,1);
+percent = R(:,2);
+results = table(word,count,percent);
+format short;
+disp(results);
+```
+
+Salida:
+
+```
+          word           count    percent
+    _________________    _____    _______
+
+    {'fucking'      }     407      23.9  
+    {'shit'         }     221        13  
+    {'fuck'         }     213      12.5  
+    {'fucks'        }       3       0.2  
+    {'n-word'       }     179      10.5  
+    {'goddamn'      }     113       6.6  
+    {'goddamned'    }       1       0.1  
+    {'motherfucker' }      70       4.1  
+    {'motherfuckers'}      15       0.9  
+    {'bitch'        }      64       3.8  
+    {'bitches'      }       9       0.5  
+    {'hell'         }      45       2.6  
+    {'damn'         }      37       2.2  
+    {'damned'       }       3       0.2  
+    {'motherfucking'}      27       1.6  
+```
+
+
+
+#### Parte 4
+
+```matlab
+%% 
+clear; close all; clc;
+data = readtable("tarantino.csv");
+total = sum(contains(data.word,'fuck'));
+w = {'fucking','fuck','motherfucker','motherfucking','fucked','motherfuckers','fucker','fucks','fuckup','fuckhead','fuckface','fuckers'};
+R = zeros(numel(w),2);
+
+for i = 1:numel(w) 
+   R(i,1) = sum( strcmp( data.word,w(i) ) );
+   R(i,2) = (R(i,1)/total )*100;
+end
+
+t_count = sum(R(:,1)); t_percent = sum(R(:,2));
+R = round([R ; [t_count, t_percent] ],1) ;
+
+type_of_fuck = [w.'; 'TOTAL'];
+count = R(:,1);
+percent = R(:,2);
+results = table(type_of_fuck,count,percent);
+format shortG
+disp(results);
+```
+
+Salida:
+
+```
+      type_of_fuck       count    percent
+    _________________    _____    _______
+
+    {'fucking'      }     407      52.7  
+    {'fuck'         }     213      27.6  
+    {'motherfucker' }      70       9.1  
+    {'motherfucking'}      27       3.5  
+    {'fucked'       }      25       3.2  
+    {'motherfuckers'}      15       1.9  
+    {'fucker'       }       8         1  
+    {'fucks'        }       3       0.4  
+    {'fuckup'       }       1       0.1  
+    {'fuckhead'     }       1       0.1  
+    {'fuckface'     }       1       0.1  
+    {'fuckers'      }       1       0.1  
+    {'TOTAL'        }     772       100 
+```
 
 
 
@@ -512,28 +727,55 @@ Cuando creamos una función nueva, el archivo de la función debe encontrarse en
 
 
 
+### Prog11: Función por partes
+
+```matlab
+%% func_partes
+function R = func_partes(x)
+    R = zeros(size(x));
+    for i = 1:numel(x)
+%         fprintf("%d\n",x(i));   % Aqui estamos utilizando sintaxis de lenguaje C
+                                  % %d significa decimal y \n es salto de linea
+        if x(i) < -1
+            R(i) = 1;
+        elseif x(i) >= -1 && x(i) < 1
+            R(i) = x(i)^2;
+        elseif x(i) >= 1
+            R(i) = -1;
+        end        
+    end
+end
+```
+
+
+
+```matlab
+%% prog11_funcion_por_partes_test
+clear; close all; clc;
+x = linspace(-3,3,5e3);
+y = func_partes(x);
+plot(x,y);
+axis([min(x) max(x) -1.5 1.5]);
+grid on; grid minor;
+```
 
 
 
 
 
+## 11. Funciones extra
 
 
 
-| Comando       | Descripción |
-| ------------- | ----------- |
-| `any()`       |             |
-| `all()`       |             |
-| `find()`      |             |
-| `flip()`      |             |
-| `repelem()`   |             |
-| `ismember()`  |             |
-| `diff()`      |             |
-| `repmat()`    |             |
-| `randperm(n)` |             |
-| `numel(x)`    |             |
-
-# Examen 1
-
-
-
+| Comando         | Descripción                                           |
+| --------------- | ----------------------------------------------------- |
+| `any()`         | Determine if any array elements are nonzero           |
+| `all()`         | Determine if all array elements are nonzero or `true` |
+| `find()`        | Find indices and values of nonzero elements           |
+| `flip()`        | Flip order of elements                                |
+| `repelem()`     | Repeat copies of array elements                       |
+| `ismember(A,B)` | Array elements that are members of set array          |
+| `diff()`        | Differences and approximate derivatives               |
+| `repmat()`      | Repeat copies of array                                |
+| `randperm(n)`   | Random permutation of integers                        |
+| `numel(x)`      | Number of array elements                              |
