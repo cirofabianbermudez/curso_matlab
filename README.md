@@ -761,11 +761,7 @@ grid on; grid minor;
 
 
 
-
-
 ## 11. Funciones extra
-
-
 
 | Comando         | Descripción                                           |
 | --------------- | ----------------------------------------------------- |
