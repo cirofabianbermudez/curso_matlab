@@ -93,7 +93,7 @@ Existe cierta flexibilidad cuando se crean arreglos. Por ejemplo, todas estas so
 | ----------------------------- | ------------------------------------------------------------ |
 | `x = 1:10`                    | Vector de 1 a 10 de uno en uno.                              |
 | `x = 0:2:20`                  | Vector de 0 hasta 20 de dos en dos.                          |
-| `x = linspace(0,20,2)`        | Vector linealmente espaciado (uniforme) de 0 hasta 20 de dos en dos. |
+| `x = linspace(0,20,100)`      | Vector linealmente espaciado (uniforme) de 0 hasta 20, con 100 puntos entre ambos. |
 | `x = rand(2,2)`               | Matriz de 2X2  de números aleatorios uniformemente distribuidos. |
 | `x = randn(2,2)`              | Matriz de 2X2  de números aleatorios normalmente distribuidos, es decir media de cero |
 | `x = randi(10,100,1);`        | Matriz de 100X1 de números aleatorios enteros uniformemente distribuidos. con valor máximo de 1. |
@@ -147,7 +147,7 @@ Concatenar matrices y vectores es una actividad muy común de manera que en esta
 | Comando        | Descripción                                                  |
 | -------------- | ------------------------------------------------------------ |
 | `h = [B C]`    | Concatenación del vector `C` a la derecha de la matriz `B`.  |
-| `h = [C D]`    | Concatenación del vector `C` a la izquierda de la matriz `B`. |
+| `h = [C B]`    | Concatenación del vector `C` a la izquierda de la matriz `B`. |
 | `h = [B; C.']` | Concatenación del vector `C` abajo de la matriz `B`.         |
 | `h = [C.'; B]` | Concatenación del vector `C` arriba de la matriz `B`.        |
 
@@ -714,7 +714,7 @@ function [s1,s2,...,sn] = function_name(x1,x2,...,xn)	% funcion multiparametro
 end
 
 
-funtion salida = function_name( entrada )	% funcion simple
+function salida = function_name( entrada )	% funcion simple
 	salida = entrada;
 end
 ```
